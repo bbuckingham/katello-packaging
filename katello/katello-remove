@@ -6,7 +6,7 @@ echo "Important packages such as the following will be removed:"
 echo ""
 echo "  * httpd (apache)"
 echo "  * mongodb"
-echo "  * tomcat6"
+echo "  * tomcat"
 echo "  * puppet"
 echo "  * ruby"
 echo "  * rubygems"
@@ -103,13 +103,12 @@ RPMS=(
     `rpm -qa | grep ^python-isodate`
     `rpm -qa | grep gutterball`
     `rpm -qa | grep $HOSTNAME`
+    `rpm -qa | grep tomcat`    
     saslwrapper
     ruby
     rubygems
     httpd
     puppet
-    tomcat
-    tomcat6 
 )
 
 CERT_FILES=(
@@ -122,6 +121,14 @@ CERT_FILES=(
     /etc/pki/tls/certs/pulp_consumers_ca.crt
     /etc/pki/tls/certs/pulp_ssl_cert.crt
     /var/www/html/pub/katello-ca*.rpm
+)
+
+CONTENT=(
+    /var/lib/qpid
+    /var/lib/hiera
+    /usr/share/qpid
+    /usr/share/qpid-tools
+    /usr/share/katello-installer
 )
 
 katello-service stop
@@ -139,3 +146,7 @@ rm -rf ${LOG_FILES[*]}
 echo "Cleaning up Certs"
 # pulp cert stuff 
 rm -rf ${CERT_FILES[*]}
+
+echo "Cleaning up Content"
+# Clean up stuff left behind
+rm -rf ${CONTENT[*]}
